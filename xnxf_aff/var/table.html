@@ -1,0 +1,54 @@
+<style type="text/css">
+.aff-form{
+  margin:0 25px;
+  text-align: center;
+}
+.aff-form input[name$="link"] {
+	color: #808080;
+	width: 70%;
+	display: inline;
+	padding: 5px;
+	height: 34px;
+	font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+.aff-form input[name$="link"]:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.aff-form input[name$="button"] {
+	margin-left: 5px;
+	background-color: #20bfe6;
+	border: 0px solid #10add3;
+	color: #fff;
+	border-radius: 3px;
+	width: 60px;
+	height: 34px;
+	vertical-align: initial;
+  cursor: pointer;
+}
+</style>
+<div class="aff-form">
+  <!-- <p class="pull-left"></p> -->
+  <p class="pull-right"><a href="http://www.aibzk.com/?Login" title="登录">登录</a> 或 <a class="login-a" href="http://www.aibzk.com/?reg" title="注册">注册</a></p>
+  <div class="clear"></div>
+  <p>分享下边链接给您的朋友，每三次点击将给您的当前访问增加一小时的访问权限！</p>
+  <input onblur="this.value='{aff-link}'" type="text" value="{aff-link}" onmouseover="this.select();" onclick="that = this;setTimeout(function(){that.select()},150);" id="aff-link" name="aff-link">
+  <input name="aff-button" value="复制" title="复制" class="aff-btn" type="button" data-clipboard-target="#aff-link">
+  <p>请保持当前IP：{aff-ip};　免会员访问期限：{aff-time}</p>
+  <!-- <p>{aff-ua}</p> -->
+</div>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
+<script type="text/javascript">
+  var clipboard = new Clipboard('.aff-btn');
+  clipboard.on('success', function (e) {
+    <!-- console.info('Action:', e.action); -->
+    <!-- console.info('Text:', e.text); -->
+    <!-- console.info('Trigger:', e.trigger); -->
+    e.clearSelection();
+    alert("复制成功！");
+  });
+</script>
