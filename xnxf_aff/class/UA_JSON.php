@@ -26,30 +26,28 @@ class UA_JSON
   public static function Add($aff = "")
   {
     $result = false;
+    $time = time();
     $data   = UA_JSON::Read();
     $Guests =& $data->Guests;
     $IP    = md5(GetGuestIP());
     $Agent = GetGuestAgent();
     if (!isset($Guests->$IP)) {
+      $Guests->$IP        = json_decode('{"Time":' . $time . '}');
+      $Guests->$IP->Agent = $Agent;
+      $Guests->$IP->Click    = -1;
       if($aff!=""&&isset($Guests->$aff)){
         $Guests->$aff->Click ++;
-        $Guests->$aff->Time += ($Guests->$aff->Click % 3 + 1) * 600; 
-        $result            = true;
+        if($Guests->$aff->Time<$time)
+          $Guests->$aff->Time = $time;
+        $Guests->$aff->Time += ($Guests->$aff->Click % aff_CFG("divide") + 1) * aff_CFG("unit") * 60; 
+        // $result            = true;
       }
-      $Guests->$IP        = json_decode('{"Time":' . time() . '}');
-      $Guests->$IP->Agent = $Agent;
-      $Guests->$IP->Click    = 0;
     } else {
-      if ($Guests->$IP->Agent === $Agent && $Guests->$IP->Time>time()) {
-        setcookie("aff-time", date("Y-m-d H:i:s",$Guests->$IP->Time));
+      if ($Guests->$IP->Agent === $Agent && $Guests->$IP->Time>$time) {
         $result            = true;
       }
     }
-    // if($aff!=""&&isset($Guests->$aff)){
-      // $Guests->$aff->Click ++;
-      // $Guests->$aff->Time += ($Guests->$aff->Click % 3 + 1) * 600; 
-      // $result            = true;
-    // }
+    setcookie("aff-time", date("Y-m-d H:i:s",$Guests->$IP->Time));
     $file = UA_JSON::FilePath();
     file_put_contents($file, json_encode($data));
     return $result;

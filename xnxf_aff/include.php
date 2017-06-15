@@ -4,9 +4,10 @@ require_once 'class/UA_JSON.php';
 RegisterPlugin("xnxf_aff","ActivePlugin_xnxf_aff");
 
 function ActivePlugin_xnxf_aff() {
-  // Add_Filter_Plugin('Filter_Plugin_ViewPost_Template', 'aff_Page');
+  // Add_Filter_Plugin('Filter_Plugin_Index_Begin', 'aff_Page');
   Add_Filter_Plugin('Filter_Plugin_ViewAuto_Begin', 'aff_Page');
 }
+
 function aff_Page($url)
 {
   global $zbp;
@@ -22,13 +23,9 @@ function aff_Page($url)
   if (preg_match($r, $url, $m) == 1) {
     // var_dump($m);
     // die();
-    $ip = GetGuestIP();
-    $link = md5($ip);
-    $link = $zbp->host . "aff/{$link}";
     $article = new Post;
     $article->Type=ZC_POST_TYPE_PAGE;
     $article->IsLock = true;
-    $article->Content = file_get_contents(aff_Path("Table"));
     if (isset($m[1]) && $m[1] != ""){
       $article->Title = "欢迎访问本站";
       UA_JSON::Add($m[1]);
@@ -36,10 +33,23 @@ function aff_Page($url)
       $article->Title = "获取推广链接";
       UA_JSON::Add();
     }
-    $article->Content = str_replace('{aff-link}',$link,$article->Content);
-    $article->Content = str_replace('{aff-ip}',$ip,$article->Content);
-    $article->Content = str_replace('{aff-ua}',GetGuestAgent(),$article->Content);
-    $article->Content = str_replace('{aff-time}',GetVars('aff-time', 'COOKIE'),$article->Content);
+    $ip = GetGuestIP();
+    $link = md5($ip);
+    $link = $zbp->host . "aff/{$link}";
+    $arrAff = array();
+    $arrAff["tip"] = aff_CFG("tip");
+    $arrAff["link"] = $link;
+    $arrAff["ip"] = $ip;
+    $arrAff["time"] = GetVars('aff-time', 'COOKIE');
+    $arrAff["ua"] = GetGuestAgent();
+    $arrAff["copy"] = aff_CFG("copy") . "\n{$link}";
+    $article->Content = file_get_contents(aff_Path("Table.html"));
+
+    foreach ($arrAff as $key=>$value){
+      $article->Content = str_replace("{{$key}}",$value,$article->Content);
+    }
+
+    $zbp->header.='<link rel="stylesheet" href="'.aff_Path("Table.css","host").'" />';
     $zbp->template->SetTags('title',$article->Title);
     $zbp->template->SetTags('article',$article);
     $zbp->template->SetTags('type','page');
@@ -49,13 +59,13 @@ function aff_Page($url)
   }
 }
 
-// function aff_CFG($name){
-  // switch ($file) {
-    // case "urlPartern":
-      // return "/(?J)^aff\/?([^\/]*)$/";
-    // break;
-  // }
-// }
+function aff_Check(){
+  return UA_JSON::Add();
+}
+function aff_CFG($name){
+  global $zbp;
+  return $zbp->Config('xnxf_aff')->$name;
+}
 
 function aff_Path($file, $t = "path")
 {
@@ -65,8 +75,11 @@ function aff_Path($file, $t = "path")
     case "Log":
       return $result . "cache/log.json";
       break;
-    case "Table":
+    case "Table.html":
       return $result . "var/table.html";
+      break;
+    case "Table.css":
+      return $result . "var/table.css";
       break;
     case "Tips":
       return $result . "var/tips.html";
@@ -78,12 +91,20 @@ function aff_Path($file, $t = "path")
       return $result;
   }
 }
+
 function InstallPlugin_xnxf_aff() {
+  global $zbp;
   $fileLog = aff_Path("Log");
   if (!is_file($fileLog)) {
     @mkdir(dirname($fileLog));
     UA_JSON::Create();
     UA_JSON::Add();
+  }
+  if (!$zbp->HasConfig('xnxf_aff')) {
+    $zbp->Config('xnxf_aff')->unit    = 10;
+    $zbp->Config('xnxf_aff')->divide  = 3;
+    $zbp->Config('xnxf_aff')->tip  = "分享下边链接给您的朋友，每三次点击将给您的当前访问增加一小时的权限提升！";
+    $zbp->SaveConfig('xnxf_aff');
   }
 }
 function UninstallPlugin_xnxf_aff() {}

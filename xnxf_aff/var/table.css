@@ -1,0 +1,35 @@
+.aff-form{
+  margin:0 25px;
+  text-align: center;
+}
+.aff-form .aff-input {
+	color: #808080;
+	width: 70%;
+	display: inline;
+	padding: 5px;
+	height: 34px;
+	font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+.aff-form .aff-input:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.aff-form #aff-copy{
+  height: 5.9em;
+  margin-bottom: -9px;
+}
+.aff-form .aff-btn {
+	margin-left: 5px;
+	background-color: #20bfe6;
+	border: 0px solid #10add3;
+	color: #fff;
+	border-radius: 3px;
+	width: 60px;
+	height: 34px;
+	vertical-align: initial;
+  cursor: pointer;
+}
