@@ -25,6 +25,7 @@ class UA_JSON
   // UA_JSON::Add()
   public static function Add($aff = "")
   {
+    global $zbp;
     $result = false;
     $time = time();
     $data   = UA_JSON::Read();
@@ -47,7 +48,8 @@ class UA_JSON
         $result            = true;
       }
     }
-    setcookie("aff-time", date("Y-m-d H:i:s",$Guests->$IP->Time));
+    setcookie("aff-time", date("m-d H:i:s",$Guests->$IP->Time),time()+300,$zbp->cookiespath);
+    setcookie("aff-click", $Guests->$IP->Click+1,time()+300,$zbp->cookiespath);
     $file = UA_JSON::FilePath();
     file_put_contents($file, json_encode($data));
     return $result;

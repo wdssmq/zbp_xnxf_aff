@@ -37,9 +37,11 @@ function aff_Page($url)
     $link = md5($ip);
     $link = $zbp->host . "aff/{$link}";
     $arrAff = array();
+    $arrAff["host"] = $zbp->host;
     $arrAff["tip"] = aff_CFG("tip");
     $arrAff["link"] = $link;
     $arrAff["ip"] = $ip;
+    $arrAff["click"] = GetVars('aff-click', 'COOKIE');
     $arrAff["time"] = GetVars('aff-time', 'COOKIE');
     $arrAff["ua"] = GetGuestAgent();
     $arrAff["copy"] = aff_CFG("copy") . "\n{$link}";
