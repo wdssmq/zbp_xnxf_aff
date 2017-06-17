@@ -40,15 +40,17 @@ class UA_JSON
         $Guests->$aff->Click ++;
         if($Guests->$aff->Time<$time)
           $Guests->$aff->Time = $time;
-        $Guests->$aff->Time += ($Guests->$aff->Click % aff_CFG("divide") + 1) * aff_CFG("unit") * 60; 
-        // $result            = true;
+        if($Guests->$aff->Time<strtotime("+7 hours"))
+          $Guests->$aff->Time += ($Guests->$aff->Click % aff_CFG("divide") + 1) * aff_CFG("unit") * 60; 
       }
     } else {
       if ($Guests->$IP->Agent === $Agent && $Guests->$IP->Time>$time) {
         $result            = true;
       }
     }
-    setcookie("aff-time", date("m-d H:i:s",$Guests->$IP->Time),time()+300,$zbp->cookiespath);
+    $aff_time = date("m-d H:i:s",$Guests->$IP->Time);
+    $aff_time = $Guests->$IP->Time > $time ? $aff_time : "<b style=\"color:red;\">{$aff_time}</b>";
+    setcookie("aff-time", $aff_time,time()+300,$zbp->cookiespath);
     setcookie("aff-click", $Guests->$IP->Click+1,time()+300,$zbp->cookiespath);
     $file = UA_JSON::FilePath();
     file_put_contents($file, json_encode($data));

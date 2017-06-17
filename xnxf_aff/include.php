@@ -59,6 +59,7 @@ function aff_Page($url)
     $zbp->template->Display();
     die();
   }
+  return;
 }
 
 function aff_Check(){
