@@ -4,8 +4,18 @@ require_once 'class/UA_JSON.php';
 RegisterPlugin("xnxf_aff", "ActivePlugin_xnxf_aff");
 function ActivePlugin_xnxf_aff()
 {
-  // Add_Filter_Plugin('Filter_Plugin_Index_Begin', 'aff_Page');
+  Add_Filter_Plugin('Filter_Plugin_ViewPost_Template', 'aff_Hide');
+
   Add_Filter_Plugin('Filter_Plugin_ViewAuto_Begin', 'aff_Page');
+}
+function aff_Hide(&$template)
+{
+  global $zbp;
+  $article = $template->GetTags('article');
+  if (!aff_CFG("hideOn") || $zbp->user->ID > 0 || aff_Check())
+    return;
+  $article->Content = str_replace('{$host}', $zbp->host, aff_CFG("hide"));
+  $article->Content = "<div style=\"background-color: #fffcef; border: 1px solid #ffbb76; color: #db7c22; font-size: 15px; margin-bottom: 10px; padding: 11px; border-radius: 3px;margin-top: 5px;line-height: 1em;\" class=\"aff-hide\">{$article->Content}</div>";
 }
 function aff_Page($url)
 {
@@ -22,15 +32,16 @@ function aff_Page($url)
   if (preg_match($r, $url, $m) == 1) {
     // var_dump($m);
     // die();
-    $geetestOn = $zbp->CheckPlugin('xnxf_geetest') ? true :false;
-    $article           = new Post;
-    $article->Type     = ZC_POST_TYPE_PAGE;
-    $article->IsLock   = true;
-    $ip                = GetGuestIP();
-    $link              = md5($ip);
-    $link              = $zbp->host . "aff/{$link}";
-    $arrAff            = array();
-    $arrAff["geetest"] = "";
+    $geetestOn             = $zbp->CheckPlugin('xnxf_geetest') ? true : false;
+    $article               = new Post;
+    $article->Type         = ZC_POST_TYPE_PAGE;
+    $article->IsLock       = true;
+
+    $ip                    = UA_JSON::GuestIP();
+    $link                  = md5(GetGuestAgent());
+    $link                  = $zbp->host . "aff/{$link}";
+    $arrAff                = array();
+    $arrAff["geetest"]     = "";
     $arrAff["geetest-tip"] = "";
     if (isset($m[1]) && $m[1] != "") {
       $article->Title = "欢迎访问本站";
@@ -47,7 +58,7 @@ function aff_Page($url)
     $arrAff["host"]   = $zbp->host;
     $arrAff["tip"]    = aff_CFG("tip");
     // if ($geetestOn)
-      // $arrAff["geetest-tip"]    = "完成人机验证既为有效";
+    // $arrAff["geetest-tip"]    = "完成人机验证既为有效";
     $arrAff["link"]   = $link;
     $arrAff["ip"]     = $ip;
     $arrAff["click"]  = GetVars('aff-click', 'COOKIE');
@@ -63,11 +74,12 @@ function aff_Page($url)
     $zbp->template->SetTags('article', $article);
     $zbp->template->SetTags('type', 'page');
     $zbp->template->SetTemplate($article->Template);
+    $zbp->Config('xnxf_aff')->hideOn = false;
     if ($geetestOn) {
       foreach ($GLOBALS['hooks']['Filter_Plugin_ViewPost_Template'] as $fpname => &$fpsignal) {
         $fpreturn = $fpname($zbp->template);
       }
-      $zbp->footer = str_replace("<!--gtplug-->", '<script src="' . aff_Path("Table.js", "host") . '" type="text/javascript"></script><!--gtplug-->',$zbp->footer);
+      $zbp->footer = str_replace("<!--gtplug-->", '<script src="' . aff_Path("Table.js", "host") . '" type="text/javascript"></script><!--gtplug-->', $zbp->footer);
     }
     $zbp->template->Display();
     die();
@@ -123,6 +135,8 @@ function InstallPlugin_xnxf_aff()
     $zbp->Config('xnxf_aff')->unit   = 10;
     $zbp->Config('xnxf_aff')->divide = 3;
     $zbp->Config('xnxf_aff')->tip    = "分享下边链接给您的朋友，每三次点击将给您的当前访问增加一小时的权限提升！";
+    $zbp->Config('xnxf_aff')->copy   = "世纪末彼岸花丛中的死之结界：";
+    $zbp->Config('xnxf_aff')->hide   = '此处内容已隐藏，请<a href="{$host}?Login" title="登录">登录</a>或<a href="{$host}aff/" title="获取推广链接">推荐本站给好友</a>以获取阅读权限！';
     $zbp->SaveConfig('xnxf_aff');
   }
 }

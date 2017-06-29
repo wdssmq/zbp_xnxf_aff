@@ -17,9 +17,11 @@ if(GetVars('act','GET')=='save'){
   $zbp->Config('xnxf_aff')->divide = round($_POST['divide']);
   $zbp->Config('xnxf_aff')->tip = $_POST['tip'];
   $zbp->Config('xnxf_aff')->copy = $_POST['copy'];
-	$zbp->SaveConfig('xnxf_aff');
-	$zbp->SetHint('good');
-	Redirect('./main.php');
+  $zbp->Config('xnxf_aff')->hide = $_POST['hide'];
+  $zbp->Config('xnxf_aff')->hideOn = $_POST['hideOn'];
+  $zbp->SaveConfig('xnxf_aff');
+  $zbp->SetHint('good');
+  Redirect('./main.php');
 }
 
 ?>
@@ -47,7 +49,7 @@ if(GetVars('act','GET')=='save'){
       <tr>
         <td>提示语</td>
         <td>
-          <textarea name="tip" id="tip" style="width: 96%;padding: 3px;" rows="3"><?php echo aff_CFG("tip") ?></textarea>
+          <textarea onmouseover="this.select();" name="tip" id="tip" style="width: 96%;padding: 3px;" rows="3"><?php echo aff_CFG("tip") ?></textarea>
         </td>
         <td></td>
       </tr>
@@ -64,6 +66,11 @@ if(GetVars('act','GET')=='save'){
       	<td>此项仅为输出，编辑无效</td>
       </tr>
       <tr>
+      	<td>全局启用</td>
+      	<td><textarea onmouseover="this.select();" name="hide" id="hide" style="width: 96%;padding: 3px;" rows="3"><?php echo aff_CFG("hide") ?></textarea></td>
+      	<td><input type="text" name="hideOn" id="hideOn" value="<?php echo aff_CFG("hideOn") ?>" class="checkbox"/> 会对全部文章正文启用隐藏，可使用下方代码进行自定义判断！</td>
+      </tr>
+      <tr>
       	<td colspan="1"><input type="submit" value="提交" /></td>
       	<td colspan="2"></td>
       </tr>
@@ -71,9 +78,9 @@ if(GetVars('act','GET')=='save'){
     </form>
     <h3>使用说明</h3>
 <pre>{if $zbp->CheckPlugin('xnxf_aff') && aff_Check()}
-
+//原始内容
 {else}
-
+<?php echo TransferHTML('<a href="{$host}aff/" title="获取推广链接">获取推广链接</a>','[html-format]') ?>"
 {/if}</pre>
   </div>
   <script type="text/javascript">
