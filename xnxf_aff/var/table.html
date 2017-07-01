@@ -4,8 +4,8 @@
   <div class="clear"></div>
   {geetest}
   <p>{tip}</p>
-  <p><input class="aff-input" onchange="this.value='{link}'" type="text" value="{link}" onmouseover="this.select();" onclick="that = this;setTimeout(function(){that.select()},150);" id="aff-link" name="aff-link"> <input class="aff-btn" value="复制" title="复制" type="button" data-clipboard-target="#aff-link"></p>
-  <p><textarea class="aff-input" name="aff-copy" id="aff-copy" onmouseover="this.select();">{copy}</textarea> <input class="aff-btn" value="复制" title="复制" type="button" data-clipboard-target="#aff-copy"></p>
+  <p><input class="aff-input" id="aff-link" name="aff-link" onchange="this.value='{link}'" type="text" value="{link}" onmouseover="this.select();" onclick="that = this;setTimeout(function(){that.select()},150);"> <input class="aff-btn" value="复制" title="复制" type="button" data-clipboard-target="#aff-link"></p>
+  <p><textarea class="aff-input" id="aff-copy" name="aff-copy" onmouseover="this.select();">{copy}</textarea> <input class="aff-btn" value="复制" title="复制" type="button" data-clipboard-target="#aff-copy"></p>
   <p>{geetest-tip}</p>
   <p>请保持当前IP：<span class="aff-ip">{ip}</span>； 有效期至：{time}； 点击：{click}</p>
   <!-- <p>{ua}</p> -->
@@ -13,16 +13,20 @@
 <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script type="text/javascript">
-  $(function(){
-    var clipboard = new Clipboard('.aff-btn');
-    clipboard.on('success', function (e) {
-      <!-- console.info('Action:', e.action); -->
-      <!-- console.info('Text:', e.text); -->
-      <!-- console.info('Trigger:', e.trigger); -->
-      e.clearSelection();
-      alert("复制成功！");
-    });
-    $(".aff-ip").html(returnCitySN.cip);
-    zbp.cookie.set("aff-ip",returnCitySN.cip,30);
+$(function () {
+  // if (!zbp.cookie.get("aff-ip") || zbp.cookie.get("aff-ip") !== returnCitySN.cip) {
+  if ("{ip}" !== returnCitySN.cip) {
+    zbp.cookie.set("aff-ip", returnCitySN.cip, 30);
+    location.reload();
+  }
+  $(".aff-ip").html(returnCitySN.cip);
+  var clipboard = new Clipboard('.aff-btn');
+  clipboard.on('success', function (e) {
+    //console.info('Action:', e.action);
+    //console.info('Text:', e.text);
+    //console.info('Trigger:', e.trigger);
+    e.clearSelection();
+    alert("复制成功！");
   });
+});
 </script>

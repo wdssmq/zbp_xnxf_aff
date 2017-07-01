@@ -38,7 +38,7 @@ function aff_Page($url)
     $article->IsLock       = true;
 
     $ip                    = UA_JSON::GuestIP();
-    $link                  = md5(GetGuestAgent());
+    $link                  = md5($ip);
     $link                  = $zbp->host . "aff/{$link}";
     $arrAff                = array();
     $arrAff["geetest"]     = "";
