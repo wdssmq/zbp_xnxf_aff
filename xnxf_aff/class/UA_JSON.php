@@ -40,7 +40,7 @@ class UA_JSON
 
     $IP     = UA_JSON::GuestIP();
     $Agent  = GetGuestAgent();
-    $Key    = md5($Agent);
+    $Key    = md5($IP);
     if (!isset($Guests->$Key)) {
       $Guests->$Key        = json_decode('{"Time":' . $time . '}');
       $Guests->$Key->Agent = $Agent;
@@ -55,11 +55,12 @@ class UA_JSON
       }
     } else {
       if ($Guests->$Key->Agent === $Agent && $Guests->$Key->Time > $time) {
-        if (!isset($Guests->$Key->IP) || $Guests->$Key->IP === $IP)
-          $result = true;
-        else
-          $Guests->$Key->Time -= ($Guests->$Key->Time - $time) * 0.2;
-        $Guests->$Key->IP = $IP;
+        $result = true;
+        // if (!isset($Guests->$Key->IP) || $Guests->$Key->IP === $IP)
+          // $result = true;
+        // else
+          // $Guests->$Key->Time -= ($Guests->$Key->Time - $time) * 0.2;
+        // $Guests->$Key->IP = $IP;
       }
     }
     $aff_time = date("m-d H:i:s", $Guests->$Key->Time);

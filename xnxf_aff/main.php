@@ -71,8 +71,8 @@ if(GetVars('act','GET')=='save'){
       	<td><input type="text" name="hideOn" id="hideOn" value="<?php echo aff_CFG("hideOn") ?>" class="checkbox"/> 会对全部文章正文启用隐藏，可使用下方代码进行自定义判断！</td>
       </tr>
       <tr>
-      	<td colspan="1"><input type="submit" value="提交" /></td>
-      	<td colspan="2"></td>
+      	<td colspan="2"><input type="submit" value="提交" /></td>
+      	<td colspan="1"></td>
       </tr>
     </table>
     </form>
