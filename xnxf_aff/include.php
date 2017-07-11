@@ -46,7 +46,7 @@ function aff_Page($url)
     if (isset($m[1]) && $m[1] != "") {
       $article->Title = "欢迎访问本站";
       if ($geetestOn) {
-        $arrAff["geetest"] = '<div class="fade" id="xnxf-geetest" style="margin: 8px 0;"><p>请完成验证</p></div>';
+        $arrAff["geetest"] = '<div class="fade" id="aff-geetest"><p>请完成验证</p><div  id="xnxf-geetest" style="margin: 8px 0;"></div></div>';
         setcookie("aff-last", $m[1], time() + 300, $zbp->cookiespath);
       } else {
         UA_JSON::Add($m[1]);
@@ -70,6 +70,8 @@ function aff_Page($url)
       $article->Content = str_replace("{{$key}}", $value, $article->Content);
     }
     $zbp->header .= '<link rel="stylesheet" href="' . aff_Path("Table.css", "host") . '" />';
+    $table = explode("------",$article->Content);
+    $article->Content = $table[0];
     $zbp->template->SetTags('title', $article->Title);
     $zbp->template->SetTags('article', $article);
     $zbp->template->SetTags('type', 'page');
@@ -81,6 +83,7 @@ function aff_Page($url)
       }
       $zbp->footer = str_replace("<!--gtplug-->", '<script src="' . aff_Path("Table.js", "host") . '" type="text/javascript"></script><!--gtplug-->', $zbp->footer);
     }
+    $zbp->footer .= $table[1];
     $zbp->template->Display();
     die();
   }

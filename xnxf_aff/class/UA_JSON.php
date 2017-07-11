@@ -42,9 +42,9 @@ class UA_JSON
     $Agent  = GetGuestAgent();
     $Key    = md5($IP);
     if (!isset($Guests->$Key)) {
-      $Guests->$Key        = json_decode('{"Time":' . $time . '}');
+      $Guests->$Key        = json_decode('{"Click":-1}');
       $Guests->$Key->Agent = $Agent;
-      $Guests->$Key->Click = -1;
+      $Guests->$Key->Time = $time;
       if ($aff !== "" && isset($Guests->$aff)) {
         $Guests->$Key->Aff = $aff;
         $Guests->$aff->Click++;
@@ -56,17 +56,12 @@ class UA_JSON
     } else {
       if ($Guests->$Key->Agent === $Agent && $Guests->$Key->Time > $time) {
         $result = true;
-        // if (!isset($Guests->$Key->IP) || $Guests->$Key->IP === $IP)
-          // $result = true;
-        // else
-          // $Guests->$Key->Time -= ($Guests->$Key->Time - $time) * 0.2;
-        // $Guests->$Key->IP = $IP;
       }
     }
     $aff_time = date("m-d H:i:s", $Guests->$Key->Time);
     $aff_time = $Guests->$Key->Time > $time ? $aff_time : "<b style=\"color:red;\">{$aff_time}</b>";
-    setcookie("aff-time", $aff_time, time() + 300, $zbp->cookiespath);
-    setcookie("aff-click", $Guests->$Key->Click + 1, time() + 300, $zbp->cookiespath);
+    setcookie("aff-time", $aff_time, time() + 3600, $zbp->cookiespath);
+    setcookie("aff-click", $Guests->$Key->Click + 1, time() + 3600, $zbp->cookiespath);
     $file = UA_JSON::FilePath();
     file_put_contents($file, json_encode($Guests));
     return $result;
