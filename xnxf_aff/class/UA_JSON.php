@@ -17,7 +17,10 @@ class UA_JSON
   //UA_JSON::Read()
   public static function Read()
   {
-    return json_decode(file_get_contents(UA_JSON::FilePath()));
+    $objD = json_decode(file_get_contents(UA_JSON::FilePath()));
+    if ($objD == null)
+      $objD = (object)array();
+    return $objD;
   }
   //UA_JSON::Create()
   public static function Create()
@@ -27,7 +30,8 @@ class UA_JSON
       if (!file_exists(dirname($file))) {
         @mkdir(dirname($file), 0755, true);
       }
-      file_put_contents($file, '{"Guests":{"8.8.8.8":{"Time":1487651979,"Agent":"XNXF","Click":0}}}');
+
+      file_put_contents($file, '{"8.8.8.8":{"Time":1487651979,"Agent":"XNXF","Click":-1}}');
     }
   }
   // UA_JSON::Add()
@@ -37,14 +41,13 @@ class UA_JSON
     $result = false;
     $time   = time();
     $Guests = UA_JSON::Read();
-
     $IP     = UA_JSON::GuestIP();
     $Agent  = GetGuestAgent();
     $Key    = md5($IP);
     if (!isset($Guests->$Key)) {
-      $Guests->$Key        = json_decode('{"Click":-1}');
+      $Guests->$Key        = (object)array("Time"=>$time);
       $Guests->$Key->Agent = $Agent;
-      $Guests->$Key->Time = $time;
+      $Guests->$Key->Click = -1;
       if ($aff !== "" && isset($Guests->$aff)) {
         $Guests->$Key->Aff = $aff;
         $Guests->$aff->Click++;
@@ -70,9 +73,6 @@ class UA_JSON
   public static function Del()
   {
     $Guests = UA_JSON::Read();
-    // $Guests =& $data->Guests; //Del After 2017-07-29
-    if (isset($Guests->Guests)) //Del After 2017-07-29
-      unset($Guests->Guests); //Del After 2017-07-29
     foreach ($Guests as $k => $v) {
       if ($v->Time < strtotime("-7 day")) {
         unset($Guests->$k);
