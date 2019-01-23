@@ -39,13 +39,13 @@ class UA_JSON
   {
     global $zbp;
     $result = false;
-    $time   = time();
+    $time = time();
     $Guests = UA_JSON::Read();
-    $IP     = UA_JSON::GuestIP();
-    $Agent  = GetGuestAgent();
-    $Key    = md5($IP);
+    $IP = UA_JSON::GuestIP();
+    $Agent = GetGuestAgent();
+    $Key = md5($IP);
     if (!isset($Guests->$Key)) {
-      $Guests->$Key        = (object)array("Time"=>$time);
+      $Guests->$Key = (object)array("Time" => $time);
       $Guests->$Key->Agent = $Agent;
       $Guests->$Key->Click = -1;
       if ($aff !== "" && isset($Guests->$aff)) {
@@ -62,8 +62,9 @@ class UA_JSON
       }
     }
     $aff_time = date("m-d H:i:s", $Guests->$Key->Time);
+    $aff_timd = ($Guests->$Key->Time - $time) / 60;
     $aff_time = $Guests->$Key->Time > $time ? $aff_time : "<b style=\"color:red;\">{$aff_time}</b>";
-    setcookie("aff-time", $aff_time, time() + 3600, $zbp->cookiespath);
+    setcookie("aff-time",  "{$aff_time}（剩余{$aff_timd}分钟）", time() + 3600, $zbp->cookiespath);
     setcookie("aff-click", $Guests->$Key->Click + 1, time() + 3600, $zbp->cookiespath);
     $file = UA_JSON::FilePath();
     file_put_contents($file, json_encode($Guests));
