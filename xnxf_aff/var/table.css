@@ -8,6 +8,7 @@
   /* font-size: 1rem; */
   margin-bottom: 10px;
   padding: 15px 1em;
+  position: relative;
 }
 .aff-form .aff-ver {
   padding-right: 1em;
@@ -61,12 +62,15 @@
   border-radius: 8px;
   max-width: 333px;
   width: 96%;
-  position: fixed;
+  position: absolute;
   z-index: 1050;
   padding: 12px 0;
 }
 #xnxf-geetest {
   min-height: 28px;
+}
+#xnxf-geetest > div {
+  margin: 0 auto;
 }
 .gt_holder.gt_float {
   margin: 0 auto;
@@ -82,7 +86,7 @@
   display: table;
 }
 .modal-backdrop {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;

@@ -2,7 +2,7 @@
 <plugin version="php">
 <id>xnxf_aff</id>
 <name>站点推广</name>
-<url>https://app.zblogcn.com/?auth=80</url>
+<url>//jq.qq.com/?_wv=1027&amp;k=555hND5</url>
 <note>用户可通过宣传推广链接以获取权限提升！</note>
 <description>置百丈玄冰而崩裂，掷须臾池水而漂摇。</description>
 <path>main.php</path>
@@ -11,7 +11,7 @@
 <author>
   <name>沉冰浮水</name>
   <email>wdssmq@qq.com</email>
-  <url>http://www.wdssmq.com</url>
+  <url>https://www.wdssmq.com</url>
 </author>
 <source>
   <name></name>
@@ -19,10 +19,10 @@
   <url></url>
 </source>
 <adapted>151740</adapted>
-<version>0</version>
+<version>1.0.3</version>
 <pubdate>2017-06-14</pubdate>
-<modified>2019-01-23</modified>
-<price>59.3</price>
+<modified>2020-09-20</modified>
+<price>0</price>
 <phpver>5.4</phpver>
 <advanced>
   <dependency></dependency>
@@ -36,5 +36,9 @@
   <sidebar3></sidebar3>
   <sidebar4></sidebar4>
   <sidebar5></sidebar5>
+  <sidebar6></sidebar6>
+  <sidebar7></sidebar7>
+  <sidebar8></sidebar8>
+  <sidebar9></sidebar9>
 </sidebars>
 </plugin>

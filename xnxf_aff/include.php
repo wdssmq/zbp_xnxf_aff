@@ -149,7 +149,7 @@ function InstallPlugin_xnxf_aff()
   if (!$zbp->HasConfig('xnxf_aff')) {
     $zbp->Config('xnxf_aff')->unit = 10;
     $zbp->Config('xnxf_aff')->divide = 3;
-    $zbp->Config('xnxf_aff')->tip = "分享下边链接给您的朋友，每三次点击将给您的当前访问增加一小时的权限提升！";
+    $zbp->Config('xnxf_aff')->tip = "分享下边链接给您的朋友以获取阅读权限";
     $zbp->Config('xnxf_aff')->copy = "世纪末彼岸花丛中的死之结界：";
     $zbp->Config('xnxf_aff')->hide = '此处内容已隐藏，请<a href="{$host}?Login" title="登录">登录</a>或<b>宣传本站链接</b>以获取阅读权限！';
     $zbp->SaveConfig('xnxf_aff');

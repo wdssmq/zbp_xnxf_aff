@@ -9,7 +9,7 @@ if (!$zbp->CheckPlugin('xnxf_geetest')) {
   $zbp->ShowError(48);
   die();
 }
-$result = geetest_verify_base();
+$result = xnxf_geetest_verify_base();
 if ($result == "ok") {
   UA_JSON::Add(GetVars('aff-last', 'COOKIE'));
   // ScriptError("验证成功");
