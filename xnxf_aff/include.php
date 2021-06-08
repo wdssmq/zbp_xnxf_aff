@@ -19,21 +19,12 @@ function aff_Hide(&$template)
   $tips = "<div class=\"aff-form\">{$tips}</div>";
   $article->Content = $tips . $article->Content;
 }
-function aff_Page($url)
+function aff_Page($inpurl, $url)
 {
   global $zbp;
-  if ($zbp->cookiespath === substr($url, 0, strlen($zbp->cookiespath))) {
-    $url = substr($url, strlen($zbp->cookiespath));
-  }
-  $url = trim(urldecode($url), '/');
   $r = "/^aff\/?([^\/]*)$/";
-  // echo $r;
-  // echo "<br />";
-  // echo $url;
   $m = array();
   if (preg_match($r, $url, $m) == 1) {
-    // var_dump($m);
-    // die();
     $post = null;
     aff_GenPage($post, $m);
     $zbp->template->Display();
