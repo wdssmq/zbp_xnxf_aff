@@ -1,3 +1,5 @@
+/* global gtplug */
+
 gtplug.aff = function () {
   $.get(
     zbp.options.bloghost + "zb_users/plugin/xnxf_aff/ajaxAdd.php",
@@ -7,14 +9,14 @@ gtplug.aff = function () {
       } else {
         $("#aff-geetest,.modal-backdrop").removeClass("in").fadeOut(777);
       }
-    }
+    },
   );
 };
 $(function () {
   const $modal = $("#aff-geetest");
-  $modal.after('<div class="modal-backdrop fade"></div>');
+  $modal.after("<div class=\"modal-backdrop fade\"></div>");
   $modal.append(
-    '<label for="aff-index"><input id="aff-index" name="aff-index" type="checkbox" checked value="1" /> 引导至首页</label>'
+    "<label for=\"aff-index\"><input id=\"aff-index\" name=\"aff-index\" type=\"checkbox\" checked value=\"1\" /> 引导至首页</label>",
   );
   $modal
     .css({
