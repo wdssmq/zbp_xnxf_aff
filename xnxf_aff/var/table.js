@@ -1,9 +1,9 @@
 /* global gtplug */
 
-gtplug.aff = function () {
+gtplug.aff = function() {
   $.get(
     zbp.options.bloghost + "zb_users/plugin/xnxf_aff/ajaxAdd.php",
-    function () {
+    function() {
       if ($("#aff-index").is(":checked")) {
         location.href = bloghost;
       } else {
@@ -12,7 +12,7 @@ gtplug.aff = function () {
     },
   );
 };
-$(function () {
+$(function() {
   const $modal = $("#aff-geetest");
   $modal.after("<div class=\"modal-backdrop fade\"></div>");
   $modal.append(
